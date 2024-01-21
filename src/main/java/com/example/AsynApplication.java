@@ -1,4 +1,4 @@
-package reactive;
+package com.example;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
-import java.io.IOException;
 import java.util.Queue;
 import java.util.concurrent.*;
 
@@ -57,12 +57,36 @@ public class AsynApplication {
                     try {
                         emitter.send("<p>Stream " + i + "</p>");
                         Thread.sleep(2000);
-                    } catch (Exception e) { }
+                    } catch (Exception e) {
+                    }
                 }
             });
             return emitter;
         }
 
+        Queue<DeferredResult<String>> results = new ConcurrentLinkedQueue<>();
+
+        @GetMapping("/dr")
+        public DeferredResult<String> dr() {
+            log.info("dr");
+            DeferredResult<String> dr = new DeferredResult<>();
+            results.add(dr);
+            return dr;
+        }
+
+        @GetMapping("/dr/count")
+        public String drCount() {
+            return String.valueOf(results.size());
+        }
+
+        @GetMapping("/dr/event")
+        public String drEvent(String msg) {
+            for (DeferredResult<String> dr : results) {
+                dr.setResult("Hello " + msg);
+                results.remove(dr);
+            }
+            return "OK";
+        }
     }
 
     @Component

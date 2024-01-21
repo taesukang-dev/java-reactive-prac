@@ -1,3 +1,5 @@
+package com.example.subjects;
+
 import org.reactivestreams.Subscriber;
 
 public class DelegateSub<T, R> implements Subscriber<T> {

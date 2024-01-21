@@ -1,3 +1,5 @@
+package com.example.subjects;
+
 import reactor.core.publisher.Flux;
 
 public class ReactorEx {
