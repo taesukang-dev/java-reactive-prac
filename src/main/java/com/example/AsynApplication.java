@@ -16,7 +16,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+//import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 import java.util.Queue;
 import java.util.concurrent.*;
@@ -49,20 +49,20 @@ public class AsynApplication {
             };
         }
 
-        @GetMapping("/emitter")
-        public ResponseBodyEmitter emitter() {
-            ResponseBodyEmitter emitter = new ResponseBodyEmitter();
-            Executors.newSingleThreadExecutor().submit(() -> {
-                for (int i = 1; i <= 50; i++) {
-                    try {
-                        emitter.send("<p>Stream " + i + "</p>");
-                        Thread.sleep(2000);
-                    } catch (Exception e) {
-                    }
-                }
-            });
-            return emitter;
-        }
+//        @GetMapping("/emitter")
+//        public ResponseBodyEmitter emitter() {
+//            ResponseBodyEmitter emitter = new ResponseBodyEmitter();
+//            Executors.newSingleThreadExecutor().submit(() -> {
+//                for (int i = 1; i <= 50; i++) {
+//                    try {
+//                        emitter.send("<p>Stream " + i + "</p>");
+//                        Thread.sleep(2000);
+//                    } catch (Exception e) {
+//                    }
+//                }
+//            });
+//            return emitter;
+//        }
 
         Queue<DeferredResult<String>> results = new ConcurrentLinkedQueue<>();
 
